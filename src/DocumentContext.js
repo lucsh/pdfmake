@@ -138,9 +138,15 @@ class DocumentContext extends EventEmitter {
 	}
 
 	initializePage() {
+		// this.y = this.getCurrentPage().pageMargins.top;
+		// this.availableHeight = this.getCurrentPage().pageSize.height - this.getCurrentPage().pageMargins.top - this.getCurrentPage().pageMargins.bottom;
+		// this.pageSnapshot().availableWidth = this.getCurrentPage().pageSize.width - this.getCurrentPage().pageMargins.left - this.getCurrentPage().pageMargins.right;
+
+
 		this.y = this.getCurrentPage().pageMargins.top;
-		this.availableHeight = this.getCurrentPage().pageSize.height - this.getCurrentPage().pageMargins.top - this.getCurrentPage().pageMargins.bottom;
-		this.pageSnapshot().availableWidth = this.getCurrentPage().pageSize.width - this.getCurrentPage().pageMargins.left - this.getCurrentPage().pageMargins.right;
+		this.x = this.getCurrentPage().pageMargins.left;
+		this.availableHeight = this.getCurrentPage().pageSize.height - this.getCurrentPage().pageMargins.top                    - this.getCurrentPage().pageMargins.bottom;
+		this.availableWidth = this.getCurrentPage().pageSize.width - this.getCurrentPage().pageMargins.left                    - this.getCurrentPage().pageMargins.right;
 	};
 
 	pageSnapshot() {
