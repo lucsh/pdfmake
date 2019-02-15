@@ -59942,9 +59942,13 @@ function (_EventEmitter) {
   };
 
   _proto.initializePage = function initializePage() {
+    // this.y = this.getCurrentPage().pageMargins.top;
+    // this.availableHeight = this.getCurrentPage().pageSize.height - this.getCurrentPage().pageMargins.top - this.getCurrentPage().pageMargins.bottom;
+    // this.pageSnapshot().availableWidth = this.getCurrentPage().pageSize.width - this.getCurrentPage().pageMargins.left - this.getCurrentPage().pageMargins.right;
     this.y = this.getCurrentPage().pageMargins.top;
+    this.x = this.getCurrentPage().pageMargins.left;
     this.availableHeight = this.getCurrentPage().pageSize.height - this.getCurrentPage().pageMargins.top - this.getCurrentPage().pageMargins.bottom;
-    this.pageSnapshot().availableWidth = this.getCurrentPage().pageSize.width - this.getCurrentPage().pageMargins.left - this.getCurrentPage().pageMargins.right;
+    this.availableWidth = this.getCurrentPage().pageSize.width - this.getCurrentPage().pageMargins.left - this.getCurrentPage().pageMargins.right;
   };
 
   _proto.pageSnapshot = function pageSnapshot() {
