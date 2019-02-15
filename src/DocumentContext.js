@@ -11,7 +11,14 @@ class DocumentContext extends EventEmitter {
 		this.pages = [];
 
 		this.pageMargins = pageMargins;
+		this.pageMarginsFkt = null;
 
+		if (typeof this.pageMargins === 'function'){
+			this.pageMarginsFkt = this.pageMargins;
+		}
+		if (this.pageMarginsFkt){
+			this.pageMargins = this.pageMarginsFkt(1);
+		}
 		this.x = pageMargins.left;
 		this.availableWidth = pageSize.width - pageMargins.left - pageMargins.right;
 		this.availableHeight = 0;
@@ -131,10 +138,10 @@ class DocumentContext extends EventEmitter {
 	}
 
 	initializePage() {
-		this.y = this.pageMargins.top;
-		this.availableHeight = this.getCurrentPage().pageSize.height - this.pageMargins.top - this.pageMargins.bottom;
-		this.pageSnapshot().availableWidth = this.getCurrentPage().pageSize.width - this.pageMargins.left - this.pageMargins.right;
-	}
+		this.y = this.getCurrentPage().pageMargins.top;
+		this.availableHeight = this.getCurrentPage().pageSize.height - this.getCurrentPage().pageMargins.top - this.getCurrentPage().pageMargins.bottom;
+		this.pageSnapshot().availableWidth = this.getCurrentPage().pageSize.width - this.getCurrentPage().pageMargins.left - this.getCurrentPage().pageMargins.right;
+	};
 
 	pageSnapshot() {
 		if (this.snapshots[0]) {
@@ -213,6 +220,14 @@ class DocumentContext extends EventEmitter {
 		this.pages.push(page);
 		this.backgroundLength.push(0);
 		this.page = this.pages.length - 1;
+		if (typeof this.pageMargins === 'function'){
+			this.pageMarginsFkt = this.pageMargins;
+		}
+
+		if (this.pageMarginsFkt){
+			this.pageMargins = this.pageMarginsFkt(this.pages.length);
+		}
+		page.pageMargins = Object.assign( {} , this.pageMargins );
 		this.initializePage();
 
 		this.emit('pageAdded');
@@ -234,6 +249,7 @@ class DocumentContext extends EventEmitter {
 		let innerWidth = pageSize.width - this.pageMargins.left - this.pageMargins.right;
 
 		return {
+			pageMargins: this.getCurrentPage().pageMargins,
 			pageNumber: this.page + 1,
 			pageOrientation: pageSize.orientation,
 			pageInnerHeight: innerHeight,
@@ -243,6 +259,7 @@ class DocumentContext extends EventEmitter {
 			verticalRatio: ((this.y - this.pageMargins.top) / innerHeight),
 			horizontalRatio: ((this.x - this.pageMargins.left) / innerWidth)
 		};
+
 	}
 }
 
